@@ -1,0 +1,41 @@
+.avg-list {
+}
+
+@counter-style phase-list {
+  system: extends decimal;
+  prefix: "第";
+  suffix: "段階";
+}
+.avg-card {
+  display: inline-block;
+  margin: 1rem;
+}
+.avg-card > h2 {
+  font-weight: unset;
+  margin: 0;
+  text-align: center;
+}
+.avg-card > ol {
+  list-style-type: phase-list;
+  padding-inline-start: 4em;
+  font-size: 1rem;
+}
+.avg-card > ol > li {
+  padding-inline-start: .5rem;
+}
+.avg-card > ol > li > span {
+  font-size: 1.25rem;
+}
+.avg-card > ol > li > span > .fraction {
+  font-size: 1rem;
+}
+
+.department-select form {
+  margin-inline-start: 1em;
+}
+.department-select label {
+  margin-inline-end: 1em;
+}
+.department-select details > div {
+  margin-inline-start: 1em;
+}

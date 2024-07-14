@@ -1,0 +1,11 @@
+.report-dialog > div {
+  text-align: end;
+}
+.report-dialog > div > button {
+  margin-inline-start: 1em;
+}
+.report-dialog > div > button:last-child {
+  background: #dd1111;
+  border-color: black;
+  color: white;
+}

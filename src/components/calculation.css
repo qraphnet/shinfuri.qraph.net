@@ -1,0 +1,37 @@
+.calculation dl {
+  margin: 0 1em;
+}
+.calculation dt {
+  display: inline-block;
+  font-size: 1em;
+  margin: 0 1em 0 2em;
+}
+.calculation dt:first-child {
+  margin-inline-start: 0;
+}
+.calculation dd {
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.calculation table {
+  margin: 1em;
+}
+
+.calculation td {
+  text-align: center;
+}
+.calculation td.num-col {
+  text-align: end;
+}
+.calculation td.expl {
+  text-align: start;
+}
+
+.calculation-config {
+  margin: .5em 1em;
+}
+.calculation-config label {
+  margin-inline-end: 1em;
+}

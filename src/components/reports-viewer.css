@@ -1,0 +1,6 @@
+.report-view td {
+  text-align: center;
+}
+.report-view td.num-col {
+  text-align: end;
+}
