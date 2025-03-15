@@ -7,6 +7,13 @@ th, td {
   border: 1px solid;
 }
 
+button[type=submit] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  opacity: 1;
+}
+
 button {
   font-size: 1em;
   background: none;
