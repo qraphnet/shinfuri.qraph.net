@@ -28,6 +28,11 @@ fieldset {
   margin: 1em 0;
 }
 
+fieldset label {
+  display: inline-block;
+  margin-inline-end: 1em;
+}
+
 .pane-select {
   margin: 1em;
 }

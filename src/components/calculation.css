@@ -4,7 +4,7 @@
 .calculation dt {
   display: inline-block;
   font-size: 1em;
-  margin: 0 1em 0 2em;
+  margin-inline-end: 0.8em;
 }
 .calculation dt:first-child {
   margin-inline-start: 0;
@@ -12,7 +12,12 @@
 .calculation dd {
   display: inline-block;
   font-size: 1.2em;
-  margin: 0;
+  margin-inline: 0;
+}
+.calculation dl div {
+  display: inline-block;
+  box-sizing: border-box;
+  margin-inline-end: 1em;
 }
 
 .calculation .table-container {
@@ -36,5 +41,12 @@
   margin: .5em 1em;
 }
 .calculation-config label {
+  display: inline-block;
   margin-inline-end: 1em;
+}
+.calculation-config select {
+  max-width: 16em;
+}
+.calculation-config select:last-child, .calculation-config input:last-child {
+  margin-inline-start: .5em;
 }

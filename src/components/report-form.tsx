@@ -8,6 +8,8 @@ import { gradeRange, isUnscoredGrade, scoredGrade, unscoredGrade } from 'shinfur
 import { canSubmit, formProps, partialReport, reportForm } from '../dataflow/reports/form.js';
 import { field }                                           from '../dataflow/util.js';
 
+import './report-form.css'
+
 const theYear = (() => {
   const date = new Date();
   date.setMonth(date.getMonth() - 3);
@@ -29,11 +31,11 @@ export const ReportForm: FC<JSX.IntrinsicElements['form']> = props => {
     , [scope]);
   
   const defaultTitle = defaultReport && (dr?.courseTitle ?? getTitle(defaultReport.course.code));
-  return <Form { ...props }>
+  return <Form { ...props } className='report-form'>
     <fieldset>
       <legend>科目</legend>
       <label>
-        科目名
+        科目名：
         <select name='title' defaultValue={ defaultTitle }>
           {
             list.flatMap(([code, titles]) => titles.map(title =>
@@ -42,17 +44,17 @@ export const ReportForm: FC<JSX.IntrinsicElements['form']> = props => {
           }
         </select></label>
       <label>
-        開講年度
+        開講年度：
         <input type='number' name='year' min={ 2000 } step={ 1 } defaultValue={ dr?.course.year ?? theYear }/>
       </label>
       <label>
-        開講学期
+        開講学期：
         <select name='term' defaultValue={ dr?.course.term }>
           { termList.map(t => <option key={ t } value={ t }>{ t }</option>) }
         </select>
       </label>
       <label>
-        単位
+        単位：
         <input type='number'
                name='credit'
                min={ 1 }
@@ -64,7 +66,7 @@ export const ReportForm: FC<JSX.IntrinsicElements['form']> = props => {
     <fieldset>
       <legend>成績</legend>
       <label>
-        評語
+        評語：
         <select name='grade' defaultValue={ defaultReport?.grade }>
           <option/>
           { unscoredGrade.map(g => <option key={ g } value={ g }>{ g }</option>) }

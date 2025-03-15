@@ -1,3 +1,7 @@
 button {
     cursor: pointer;
 }
+
+:root {
+    color-scheme: light;
+}

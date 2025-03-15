@@ -24,8 +24,8 @@ const Config: FC = () => {
   const [zero, setZero] = useRecoilState(zeroInclusion);
   return <div className='avg-list-config'>
     <label>
-      0点算入
       <input type='checkbox' checked={ zero } onChange={ v => setZero(v.target.checked) }/>
+      0点算入
     </label>
   </div>;
 };

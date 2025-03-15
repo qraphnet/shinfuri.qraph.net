@@ -1,0 +1,11 @@
+.report-form input[name=year] {
+    max-width: 4em;
+}
+.report-form input[name=credit] {
+    max-width: 2em;
+}
+.report-form input[name=point],
+.report-form input[name=minpoint],
+.report-form input[name=maxpoint]{
+    max-width: 3em;
+}

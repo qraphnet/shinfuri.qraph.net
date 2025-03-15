@@ -10,6 +10,8 @@ import { isValid, profileForm, validated } from '../dataflow/profile/form.js';
 import { Profile, profileState }           from '../dataflow/profile/index.ts';
 import { field }                           from '../dataflow/util.js';
 
+import './profile-form.css'
+
 export const ProfileForm: FC<{ profile?: Profile }> = ({ profile }) => {
   const Form = useRecoilValue(profileForm);
   

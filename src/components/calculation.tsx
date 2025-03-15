@@ -30,20 +30,30 @@ export const Calculation = () => {
   return <div className='calculation'>
     <Config/>
     <dl>
-      <dt>Σ単位×重率</dt>
-      <dd>{ weightedCredits.toNumber() }</dd>
-      <dt>Σ評点×単位×重率</dt>
-      <dd>{ weightedPoints.toNumber() }</dd>
-      <dt>基本平均点</dt>
-      <dd>{ weightedPoints.div(weightedCredits).toNumber() }</dd>
-      { ticket.factor && <>
+      <div>
+        <dt>Σ単位×重率</dt>
+        <dd>{ weightedCredits.toNumber() }</dd>
+      </div>
+      <div>
+        <dt>Σ評点×単位×重率</dt>
+        <dd>{ weightedPoints.toNumber() }</dd>
+      </div>
+      <div>
+        <dt>基本平均点</dt>
+        <dd>{ weightedPoints.div(weightedCredits).toNumber() }</dd>
+      </div>
+      { ticket.factor && <div>
         <dt>修得単位数</dt>
         <dd>{ ticket.factor.toNumber() }</dd>
-      </> }
-      <dt>履修点</dt>
-      <dd>{ ticket.additionalPoint.reduce((a, c) => a + c.point * (c.valid ? 1 : 0), 0) }</dd>
-      <dt>平均点</dt>
-      <dd>{ calculate(ticket).toNumber() }</dd>
+      </div> }
+      <div>
+        <dt>履修点</dt>
+        <dd>{ ticket.additionalPoint.reduce((a, c) => a + c.point * (c.valid ? 1 : 0), 0) }</dd>
+      </div>
+      <div>
+        <dt>平均点</dt>
+        <dd>{ calculate(ticket).toNumber() }</dd>
+      </div>
     </dl>
     <div className='table-container'>
       <table>
@@ -168,8 +178,8 @@ const Config: FC        = () => {
       </select>
     </label>
     <label>
-      0点算入
       <input type='checkbox' checked={ zero } onChange={ v => setZero(v.target.checked) }/>
+      0点算入
     </label>
     <label>
       皮算用
