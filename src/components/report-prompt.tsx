@@ -58,7 +58,7 @@ const exploitClipboard = async (languageOption: LanguageOption): Promise<InputRe
         
         const code = getCourseCode(courseTitle, languageOption);
         if (code == null) {
-          console.log(row[1], 'is an unknown course title');
+          console.log(courseTitle, 'is an unknown course title');
           return;
         }
         
