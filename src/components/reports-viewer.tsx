@@ -1,15 +1,15 @@
-import { getTitle, Scope } from 'shinfuri/lib/course-code.js';
-import { pointToGrade }    from 'shinfuri/lib/report.js';
-
 import type { FC, ReactNode }                from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { Profile }                           from '../dataflow/profile';
+import { getTitle, Scope }                   from 'shinfuri/lib/course-code.js';
+import { pointToGrade }                      from 'shinfuri/lib/report.js';
 
-import { InputReport, reportCardState } from '../dataflow/reports/index.js';
-import { depth, courseTreeState }       from '../dataflow/course-tree.js';
+import { courseTreeState, depth }       from '../dataflow/course-tree.js';
+import { Profile }                      from '../dataflow/profile';
 import { formProps }                    from '../dataflow/reports/form.js';
-import { ReportPrompt }                 from './report-prompt.tsx';
-import { Rows }                         from './table.js';
+import { InputReport, reportCardState } from '../dataflow/reports/index.js';
+
+import { ReportPrompt } from './report-prompt.tsx';
+import { Rows }         from './table.js';
 
 import './reports-viewer.css';
 
@@ -42,21 +42,22 @@ export const Reports: FC<{ profile: Profile }> = ({ profile }) => {
 const mapper  = (report: InputReport) => report.course.code;
 const counter = () => 1;
 
-const Th: FC<{ colSpan?: number; rowSpan?: number; } & ({ name: string; scope: Scope } | {
-  name?: undefined;
-  scope?: undefined
-})> =
-        ({ name, scope, ...rest }) => {
-          const f = useSetRecoilState(formProps);
-          return <th { ...rest }>{ scope && <button onClick={ () => { f({ scope }); } }>{ name }</button> }</th>;
-        };
+type ThProps =
+  & { colSpan?: number; rowSpan?: number; }
+  & ({ name: string; scope: Scope } | { name?: undefined; scope?: undefined })
+  ;
+const Th: FC<ThProps> = ({ name, scope, ...rest }) => {
+  const f = useSetRecoilState(formProps);
+  return <th { ...rest }>{ scope && <button onClick={ () => { f({ scope }); } }>{ name }</button> }</th>;
+};
 
 const Row: FC<{ value?: InputReport, children: ReactNode }> = ({ value, children }) => {
   const f = useSetRecoilState(formProps);
+  
   if (value == null) return <tr>{ children }
     <td colSpan={ 6 }/>
   </tr>;
-  return <tr>
+  else return <tr>
     { children }
     <td>
       <button onClick={ () => { f({ defaultReport: value }); } }>{ value.courseTitle ?? getTitle(value.course.code) }</button>
@@ -69,7 +70,7 @@ const Row: FC<{ value?: InputReport, children: ReactNode }> = ({ value, children
   </tr>;
 };
 
-const GradeCell: FC<{ report: InputReport }>         = ({ report: { grade, point } }) => {
+const GradeCell: FC<{ report: InputReport }> = ({ report: { grade, point } }) => {
   if (grade != null) return <td>{ grade }</td>;
   else if (point == null) return <td>--</td>;
   else {
@@ -78,6 +79,7 @@ const GradeCell: FC<{ report: InputReport }>         = ({ report: { grade, point
     return <td>{ grade_ }~{ _grade }</td>;
   }
 };
+
 const PointCell: FC<{ point: InputReport['point'] }> = ({ point }) => {
   if (point == null) return <td>--</td>;
   if ('number' === typeof point) return <td className='num-col'>{ point }</td>;
