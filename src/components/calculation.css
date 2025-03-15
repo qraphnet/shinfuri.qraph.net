@@ -15,6 +15,9 @@
   margin: 0;
 }
 
+.calculation .table-container {
+  overflow-x: auto;
+}
 .calculation table {
   margin: 1em;
 }

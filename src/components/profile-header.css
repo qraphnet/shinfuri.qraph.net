@@ -1,20 +1,24 @@
 .profile-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
   margin-block: 1rem;
 }
 .profile-header dl {
   display: inline-block;
   margin: 0;
-  padding-inline: 1em;
+  padding-inline: 0 1em;
+}
+.profile-header dl div {
+  display: inline-block;
+  box-sizing: border-box;
+  margin-inline-end: 1em;
 }
 .profile-header dt {
   display: inline-block;
   font-size: 0.8em;
-  margin: 0 .8em 0 2em;
-}
-.profile-header dt:first-child {
-  margin-inline-start: 0;
+  margin-inline-end: 0.8em;
 }
 .profile-header dd {
   display: inline-block;
-  margin: 0;
+  margin-inline: 0;
 }

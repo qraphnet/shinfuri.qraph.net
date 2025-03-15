@@ -39,6 +39,7 @@ fieldset {
   margin-inline-end: 1em;
   border-bottom: 1px solid transparent;
   padding-block: .25em;
+  cursor: pointer;
 }
 .pane-select label:has(input:checked) {
   border-bottom: 1px solid black;

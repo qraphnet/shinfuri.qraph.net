@@ -24,20 +24,30 @@ export const ProfileHeader: FC = () => {
 
   return <header className='profile-header'>
     <dl>
-      <dt>所属</dt>
-      <dd>{karuiJa[karui]}{classNum}組</dd>
-      <dt>既修外国語</dt>
-      <dd>{languageCodeMap[first]}</dd>
-      <dt>初修外国語</dt>
-      <dd>{languageCodeMap[second]}{ learned ? '（既修相当）' : null }</dd>
-      <dt>留年・降年</dt>
-      <dd>
-        { lastRepetition == null ? 'なし'
-          : lastRepetition.kind == '留年' ? `${lastRepetition.year}年度から${lastRepetition.year+1}年度にかけて留年`
-            : `${lastRepetition.year}年度に降年` }
-      </dd>
+      <div>
+        <dt>所属</dt>
+        <dd>{karuiJa[karui]}{classNum}組</dd>
+      </div>
+      <div>
+        <dt>既修外国語</dt>
+        <dd>{languageCodeMap[first]}</dd>
+      </div>
+      <div>
+        <dt>初修外国語</dt>
+        <dd>{languageCodeMap[second]}{ learned ? '（既修相当）' : null }</dd>
+      </div>
+      <div>
+        <dt>留年・降年</dt>
+        <dd>
+          { lastRepetition == null ? 'なし'
+            : lastRepetition.kind == '留年' ? `${lastRepetition.year}年度から${lastRepetition.year+1}年度にかけて留年`
+              : `${lastRepetition.year}年度に降年` }
+        </dd>
+      </div>
     </dl>
-    <button onClick={() => setOpen(true)}>変更する</button>
+    <div>
+      <button onClick={() => setOpen(true)}>設定</button>
+    </div>
   </header>;
 };
 
