@@ -15,7 +15,7 @@ const paneState = atom<Pane>({
   default: 'reports',
 })
 
-export const Main: FC<{ profile: Profile}> = () => {
+export const Main: FC<{ profile: Profile}> = ({ profile }) => {
   const [pane, setPane] = useRecoilState(paneState)
   return <div>
     <ProfileHeader/>
@@ -24,7 +24,7 @@ export const Main: FC<{ profile: Profile}> = () => {
       <label><input type="radio" value="avg-list" checked={pane === "avg-list"} onChange={e => setPane(e.target.value as Pane)} />平均点一覧</label>
       <label><input type="radio" value="calculation" checked={pane === "calculation"} onChange={e => setPane(e.target.value as Pane)} />平均点計算</label>
     </div>
-    { pane === 'reports' ? <Reports /> : pane === "avg-list" ? <AvgList /> : <Calculation/> }
+    { pane === 'reports' ? <Reports profile={profile}/> : pane === "avg-list" ? <AvgList /> : <Calculation/> }
     <ReportDialog />
   </div>;
 };

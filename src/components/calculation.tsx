@@ -6,6 +6,9 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {FC, memo, ReactNode} from 'react';
 
 import { departmentState, phaseState, ticketState, TicketWeightReport, weightingState } from '../dataflow/calculation-detail.js';
+import {
+  zeroInclusion
+}                                                                                       from '../dataflow/calculation.ts';
 import {courseTreeState, depth} from '../dataflow/course-tree.js';
 import {Rows} from '../components/table.js';
 import {formProps} from '../dataflow/reports/form.js';
@@ -42,8 +45,9 @@ export const Calculation = () => {
       <dt>平均点</dt>
       <dd>{ calculate(ticket).toNumber() }</dd>
     </dl>
-    <table>
-      <thead>
+    <div className='table-container'>
+      <table>
+        <thead>
         <tr>
           <th colSpan={sideWidth}>科目区分</th>
           <th>科目名</th>
@@ -58,11 +62,12 @@ export const Calculation = () => {
           <th>評点×単位×重率</th>
           <th>付記</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <Rows values={ticket.weights} tree={tree} mapper={mapper} rowCounter={counter} th={Th} row={Row(eng)}/>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
     <table>
       <caption>履修点</caption>
       <thead>
@@ -131,6 +136,7 @@ const Config: FC = () => {
   const [dep, setDep] = useRecoilState(departmentState);
   const [phase, setPhase] = useRecoilState(phaseState);
   const [wei, setWei] = useRecoilState(weightingState);
+  const [zero, setZero] = useRecoilState(zeroInclusion);
   return <div className='calculation-config'>
     <label>進学単位<select value={dep} onChange={v => setDep(v.target.value as any)}><DepartmentOptions/></select></label>
     <label>段階<select value={phase} onChange={v => setPhase(+v.target.value as any)}>
@@ -138,6 +144,7 @@ const Config: FC = () => {
       <option value="2">2</option>
       <option value="3">3</option>
     </select></label>
+    <label>0点算入<input type="checkbox" checked={zero} onChange={v => setZero(v.target.checked)}/></label>
     <label>皮算用<input type="range" value={wei * 100 | 0} onChange={v => setWei(+v.target.value / 100)}/>{wei * 100 | 0}%</label>
   </div>
 };

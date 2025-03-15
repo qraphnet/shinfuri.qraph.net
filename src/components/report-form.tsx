@@ -8,6 +8,13 @@ import {useRecoilValue} from "recoil";
 import {field} from "../dataflow/util.js";
 import {canSubmit, formProps, partialReport, reportForm} from "../dataflow/reports/form.js";
 
+const theYear = (() => {
+  const date = new Date();
+  date.setMonth(date.getMonth() - 3);
+  
+  return date.getFullYear();
+})();
+
 export const ReportForm: FC<JSX.IntrinsicElements['form']> = props => {
   const Form = useRecoilValue(reportForm);
   const { scope, defaultReport } = useRecoilValue(formProps) ?? {};
@@ -27,11 +34,11 @@ export const ReportForm: FC<JSX.IntrinsicElements['form']> = props => {
       <label>科目名<select name="title" defaultValue={defaultTitle}>
         { list.flatMap(([code, titles]) => titles.map(title => <option key={`${code}/${title}`} value={title}>{title}</option>)) }
       </select></label>
-      <label>開講年度<input type="number" name="year" min={2000} step={1} defaultValue={dr?.course.year}/></label>
+      <label>開講年度<input type="number" name="year" min={2000} step={1} defaultValue={dr?.course.year ?? theYear}/></label>
       <label>開講学期<select name="term" defaultValue={dr?.course.term}>
         { termList.map(t => <option key={t} value={t}>{ t }</option>) }
       </select></label>
-      <label>単位<input type="number" name="credit" min={1} max={2} step={1} defaultValue={defaultReport?.course.credit}/></label>
+      <label>単位<input type="number" name="credit" min={1} max={2} step={1} defaultValue={defaultReport?.course.credit ?? 2}/></label>
     </fieldset>
     <fieldset><legend>成績</legend>
       <label>評語<select name="grade" defaultValue={defaultReport?.grade}>

@@ -28,8 +28,8 @@ export const ticketState = selector({
   key: 'dataflow-calc-detail-ticket',
   get: ({ get }) => {
     const profile = get(profileState);
-    if (profile == null) return void 0;
     const reports = get(reportCardState);
+    if (profile == null || reports.length == 0) return void 0;
 
     const department = get(departmentState);
     const phase = get(phaseState);

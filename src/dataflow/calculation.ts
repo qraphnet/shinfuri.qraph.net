@@ -21,10 +21,10 @@ export const ticketState = selectorFamily<[CalculationTicket<Fixed<InputReport>>
   key: 'dataflow-calculation-ticket',
   get: ({ department, phase }) => ({ get }) => {
     const profile = get(profileState);
-    if (profile == null) return void 0;
+    const reports = get(reportCardState);
+    if (profile == null || reports == null) return void 0;
 
     const zero = get(zeroInclusion);
-    const reports = get(reportCardState);
 
     const { karui, langOption, lastRepetition, classNum } = profile;
     const group = grouping[karui][classNum];

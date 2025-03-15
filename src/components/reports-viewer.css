@@ -1,3 +1,6 @@
+.report-view {
+  overflow-x: auto;
+}
 .report-view td {
   text-align: center;
 }

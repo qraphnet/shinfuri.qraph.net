@@ -10,7 +10,7 @@ export const Root: FC = () => {
 
   switch (pageStatus.status) {
     case 'profile': return <ProfileForm profile={pageStatus.profile} />;
-    case 'reports': //return <ReportPrompt profile={pageStatus.profile} />;
+    case 'reports':
     case 'ordinary': return <Main profile={pageStatus.profile} />;
   }
 };

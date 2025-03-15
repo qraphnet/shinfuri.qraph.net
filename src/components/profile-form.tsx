@@ -44,7 +44,7 @@ export const ProfileForm: FC<{ profile?: Profile }> = ({ profile }) => {
     </fieldset>
     <fieldset>
       <legend>既修外国語</legend>
-      <label>言語：<select name="first" defaultValue={ profile?.langOption.firstForeignLanguage }>
+      <label>言語：<select name="first" defaultValue={ profile?.langOption.firstForeignLanguage ?? 'en' }>
         { kishuForeignLangList.map(l => <option key={l} value={l}>{languageCodeMap[l]}</option>) }
       </select></label>
     </fieldset>
