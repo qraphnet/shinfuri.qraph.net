@@ -48,7 +48,10 @@ const AvgCard: FC<{ department: Department }> = ({ department }) => {
   const first  = useRecoilValue(avgPointState({ department, phase: 1 }));
   const second = useRecoilValue(avgPointState({ department, phase: 2 }));
   const third  = useRecoilValue(avgPointState({ department, phase: 3 }));
-  if (first == null || second == null || third == null) throw Error('profile required');
+  if (first == null || second == null || third == null) return <div className='avg-card'>
+    <h2>{ department }</h2>
+    <p>成績を入力してください</p>
+  </div>
   return <div className='avg-card'>
     <h2>{ department }</h2>
     <ol>

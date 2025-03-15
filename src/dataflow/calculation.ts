@@ -21,7 +21,7 @@ export const ticketState = selectorFamily<[CalculationTicket<Fixed<InputReport>>
   get: ({ department, phase }) => ({ get }) => {
     const profile = get(profileState);
     const reports = get(reportCardState);
-    if (profile == null || reports == null) return void 0;
+    if (profile == null || reports.length == 0) return void 0;
     
     const zero = get(zeroInclusion);
     

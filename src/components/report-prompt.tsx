@@ -50,38 +50,62 @@ const exploitClipboard = async (languageOption: LanguageOption): Promise<InputRe
       }
       
       return rows.filter(row => row[1] != '').map((row): InputReport | undefined => {
-        const courseTitle = row[0].match(/^\s*＊?(.+)$/)?.[1];
-        if (courseTitle == null) return;
+        const courseTitle = row[0].match(/^\s*[＊△]?(.+)$/)?.[1];
+        if (courseTitle == null) {
+          console.log(row[0], 'is an invalid value of 科目 column');
+          return;
+        }
         
         const code = getCourseCode(courseTitle, languageOption);
-        if (code == null) return;
+        if (code == null) {
+          console.log(row[1], 'is an unknown course title');
+          return;
+        }
         
         const credit = row[4] == '' ? interpolateCredits(code) : +row[4];
-        if (credit != 1 && credit != 2) return;
+        if (credit != 1 && credit != 2) {
+          console.log(row[4], 'is invalid for a credit number');
+          return;
+        }
         
         const term = inferTerm(code, row[3], credit);
-        if (term == null) return;
+        if (term == null) {
+          console.log(row[3], 'is an unknown term');
+          return;
+        }
         
         const course: Course = {
           code, year: +row[2], term, credit,
         };
         
-        const score = +row[5];
-        if (Number.isNaN(score)) {
+        if (row[5] == '#') {
           return {
             courseTitle,
             course,
-            grade: row[5] == 'G' ? '合格' : '不合格',
+            grade: '欠席',
+            point: 0,
           };
         } else {
-          const grade = pointToGrade(+row[5]);
-          if (grade == null) return;
-          return {
-            courseTitle,
-            course,
-            grade,
-            point: +row[5],
-          };
+          const score = +row[5];
+          if (Number.isNaN(score)) {
+            return {
+              courseTitle,
+              course,
+              grade: row[5] == 'G' ? '合格' : '不合格',
+            };
+          } else {
+            const grade = pointToGrade(+row[5]);
+            if (grade == null) {
+              console.log(row[5], 'is invalid for the course score');
+              return;
+            }
+            return {
+              courseTitle,
+              course,
+              grade,
+              point: +row[5],
+            };
+          }
         }
       }).filter(r => r != null);
     }
