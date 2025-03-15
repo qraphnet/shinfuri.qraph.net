@@ -39,14 +39,14 @@ const exploitClipboard = async (languageOption: LanguageOption): Promise<InputRe
         return;
       }
       
-      let head   = ['科目', '教員', '年度', '学期', '単位', '成績の原評価（点数）'];
+      // let head   = ['科目', '教員', '年度', '学期', '単位', '成績の原評価（点数）'];
       const rows = [];
       for (const row of table.rows) {
         if (row.cells.length != 6) continue;
         const cells = [...row.cells].map(cell => cell.textContent ?? '');
         
-        if (row.cells[0].classList.contains('seiseki-head')) head = cells;
-        else rows.push(cells);
+        if (!row.cells[0].classList.contains('seiseki-head')) rows.push(cells);
+        // else head = cells;
       }
       
       return rows.filter(row => row[1] != '').map((row): InputReport | undefined => {

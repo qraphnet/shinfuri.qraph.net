@@ -1,11 +1,12 @@
-import { FC, FormEventHandler, Suspense }    from 'react';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
-import { department, Department }            from 'shinfuri/lib/department/index.js';
-import { Rational }                          from 'shinfuri/lib/rational.js';
-import { avgPointState }                     from '../dataflow/calculation.js';
+import { FC, FormEventHandler, Suspense }                    from 'react';
+import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
+import { department, Department }                            from 'shinfuri/lib/department/index.js';
+import { Rational }                                          from 'shinfuri/lib/rational.js';
+
+import { avgPointState, zeroInclusion } from '../dataflow/calculation.js';
 import {
   alteredState, departmentsForm, inputDepartments, selectedDepartments,
-}                                            from '../dataflow/department-selected.js';
+}                                       from '../dataflow/department-selected.js';
 
 import './avg-list.css';
 
@@ -13,8 +14,19 @@ export const AvgList: FC = () => {
   const selected = useRecoilValue(selectedDepartments);
   
   return <div className='avg-list'>
+    <Config/>
     <DepartmentSelect selected={ selected }/>
     { Array.from(selected).map(d => <AvgCard key={ d } department={ d }/>) }
+  </div>;
+};
+
+const Config: FC = () => {
+  const [zero, setZero] = useRecoilState(zeroInclusion);
+  return <div className='avg-list-config'>
+    <label>
+      0点算入
+      <input type='checkbox' checked={ zero } onChange={ v => setZero(v.target.checked) }/>
+    </label>
   </div>;
 };
 

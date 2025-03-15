@@ -1,6 +1,10 @@
 .avg-list {
 }
 
+.avg-list-config {
+  margin: 1rem;
+}
+
 @counter-style phase-list {
   system: extends decimal;
   prefix: "第";
