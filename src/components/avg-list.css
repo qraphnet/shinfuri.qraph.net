@@ -5,6 +5,22 @@
   margin: 1rem;
 }
 
+.avg-list-config label {
+  display: inline-block;
+  margin-inline-end: 1em;
+}
+.avg-list-config select {
+  max-width: 16em;
+}
+.avg-list-config select:last-child, .calculation-config input:last-child {
+  margin-inline-start: .5em;
+}
+
+.avg-list-config label .description{
+  font-size: .8em;
+  margin-inline-start: .5em;
+}
+
 @counter-style phase-list {
   system: extends decimal;
   prefix: "第";

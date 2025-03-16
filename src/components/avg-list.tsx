@@ -3,10 +3,12 @@ import { useRecoilCallback, useRecoilState, useRecoilValue } from 'recoil';
 import { department, Department }                            from 'shinfuri/lib/department/index.js';
 import { Rational }                                          from 'shinfuri/lib/rational.js';
 
-import { avgPointState, zeroInclusion } from '../dataflow/calculation.js';
+import { avgPointState, repetitionExclusion, zeroInclusion } from '../dataflow/calculation.js';
 import {
   alteredState, departmentsForm, inputDepartments, selectedDepartments,
-}                                       from '../dataflow/department-selected.js';
+}                                                            from '../dataflow/department-selected.js';
+import { profileState }                                      from '../dataflow/profile';
+import { field }                                             from '../dataflow/util.ts';
 
 import './avg-list.css';
 
@@ -22,10 +24,22 @@ export const AvgList: FC = () => {
 
 const Config: FC = () => {
   const [zero, setZero] = useRecoilState(zeroInclusion);
+  
+  const lastRepetition                  = useRecoilValue(field(profileState, 'lastRepetition'));
+  const [repExclusion, setRepExclusion] = useRecoilState(repetitionExclusion);
+  
   return <div className='avg-list-config'>
+    {
+      lastRepetition != null && lastRepetition.kind == '降年' ? <label>
+        <input type='checkbox' checked={ repExclusion } onChange={ v => setRepExclusion(v.target.checked) }/>
+        2S基礎科目除外
+        <span className='description'>降年した場合，Aセメスターの成績発表時にUTASで表示される基本平均点は，2Sの基礎科目を除外して計算されます．</span>
+      </label> : null
+    }
     <label>
       <input type='checkbox' checked={ zero } onChange={ v => setZero(v.target.checked) }/>
       0点算入
+      <span className='description'>欠席，未履修の科目を含めて計算することを当サイトでは「0点算入」と呼びます．UTASで確認できる基本平均点は0点算入アリです．</span>
     </label>
   </div>;
 };
@@ -51,7 +65,7 @@ const AvgCard: FC<{ department: Department }> = ({ department }) => {
   if (first == null || second == null || third == null) return <div className='avg-card'>
     <h2>{ department }</h2>
     <p>成績を入力してください</p>
-  </div>
+  </div>;
   return <div className='avg-card'>
     <h2>{ department }</h2>
     <ol>

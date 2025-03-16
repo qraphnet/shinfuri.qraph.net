@@ -7,10 +7,12 @@ import { Weighted }                                                 from 'shinfu
 
 import {
   departmentState, phaseState, ticketState, TicketWeightReport, weightingState,
-}                                 from '../dataflow/calculation-detail.js';
-import { zeroInclusion }          from '../dataflow/calculation.ts';
-import { courseTreeState, depth } from '../dataflow/course-tree.js';
-import { formProps }              from '../dataflow/reports/form.js';
+}                                             from '../dataflow/calculation-detail.js';
+import { repetitionExclusion, zeroInclusion } from '../dataflow/calculation.ts';
+import { courseTreeState, depth }             from '../dataflow/course-tree.js';
+import { profileState }                       from '../dataflow/profile';
+import { formProps }                          from '../dataflow/reports/form.js';
+import { field }                              from '../dataflow/util.ts';
 
 import { Rows } from './table.js';
 
@@ -162,6 +164,10 @@ const Config: FC        = () => {
   const [phase, setPhase] = useRecoilState(phaseState);
   const [wei, setWei]     = useRecoilState(weightingState);
   const [zero, setZero]   = useRecoilState(zeroInclusion);
+  
+  const lastRepetition                  = useRecoilValue(field(profileState, 'lastRepetition'));
+  const [repExclusion, setRepExclusion] = useRecoilState(repetitionExclusion);
+  
   return <div className='calculation-config'>
     <label>
       進学単位
@@ -177,6 +183,12 @@ const Config: FC        = () => {
         <option value='3'>3</option>
       </select>
     </label>
+    {
+      lastRepetition != null && lastRepetition.kind == '降年' ? <label>
+        <input type='checkbox' checked={ repExclusion } onChange={ v => setRepExclusion(v.target.checked) }/>
+        2S基礎科目除外
+      </label> : null
+    }
     <label>
       <input type='checkbox' checked={ zero } onChange={ v => setZero(v.target.checked) }/>
       0点算入

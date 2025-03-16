@@ -1,11 +1,11 @@
 import { atom, RecoilValueReadOnly, selector } from 'recoil';
-import { makeTicket, Options as CalcOptions }  from 'shinfuri';
+import { Options as CalcOptions }              from 'shinfuri';
 import { Department }                          from 'shinfuri/lib/department/index.js';
-import { grouping, Phase }                     from 'shinfuri/lib/type-utils.js';
+import { Phase }                               from 'shinfuri/lib/type-utils.js';
 
-import { zeroInclusion }              from './calculation.js';
-import { profileState }               from './profile/index.js';
-import { reportCardState, weighting } from './reports/index.js';
+import { generateTicket, repetitionExclusion, zeroInclusion } from './calculation.js';
+import { profileState }                                       from './profile/index.js';
+import { reportCardState, weighting }                         from './reports/index.js';
 
 export const departmentState = atom<Department>({
   key    : 'dataflow-calc-detail-department',
@@ -33,20 +33,9 @@ export const ticketState = selector({
     const department = get(departmentState);
     const phase      = get(phaseState);
     const weight     = get(weightingState);
-    const zero       = get(zeroInclusion);
     
-    const { karui, langOption, lastRepetition, classNum } = profile;
-    const group                                           = grouping[karui][classNum];
-    const exclude: CalcOptions['exclude']                 = zero ? [] : ['未履修', '欠席'];
+    const exclude: CalcOptions['exclude'] = get(zeroInclusion) ? [] : ['未履修', '欠席'];
     
-    return makeTicket(weighting(reports, weight), {
-      karui,
-      group,
-      langOption,
-      department,
-      phase,
-      exclude,
-      lastRepetition,
-    });
+    return generateTicket(weighting(reports, weight), profile, department, phase, exclude, get(repetitionExclusion));
   },
 });

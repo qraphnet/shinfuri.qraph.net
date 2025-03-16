@@ -1,16 +1,38 @@
 import { atom, selectorFamily }                                             from 'recoil';
 import { calculate, CalculationTicket, makeTicket, Options as CalcOptions } from 'shinfuri';
+import { isSubcourseOf }                                                    from 'shinfuri/lib/course-code.js';
 import { Department }                                                       from 'shinfuri/lib/department/index.js';
 import { Rational }                                                         from 'shinfuri/lib/rational.js';
 import { grouping, Phase }                                                  from 'shinfuri/lib/type-utils.js';
 
-import { profileState }                                         from './profile/index.js';
+import { Profile, profileState }                                from './profile/index.js';
 import { Fixed, highest, InputReport, lowest, reportCardState } from './reports/index.js';
 
 export const zeroInclusion = atom<boolean>({
   key    : 'dataflow-zero-inclusion',
   default: true,
 });
+
+export const repetitionExclusion = atom<boolean>({
+  key    : 'dataflow-repetition-exclusion',
+  default: new Date().getMonth() + 1 < 6,
+});
+
+// ref: https://www.c.u-tokyo.ac.jp/zenki/news/kyoumu/b22d51ae6664e3612e6f50a562d98df464b547e8.pdf    (2) ※4~6
+const repExcFilter = isSubcourseOf('FC813', 'FC823', 'FC850', 'FC888', 'FC891')
+export const generateTicket = (reports: readonly Fixed<InputReport>[], profile: Profile, department: Department, phase: Phase, exclude: CalcOptions['exclude'], repEx: boolean) => {
+  const { karui, langOption, lastRepetition, classNum } = profile;
+  const group                                           = grouping[karui][classNum];
+  
+  let _reports: Fixed<InputReport>[];
+  if (repEx && lastRepetition != null && lastRepetition.kind == '降年') {
+    _reports   = reports.filter(r => !(repExcFilter(r.course.code) && r.course.year == lastRepetition.year));
+  } else {
+    _reports = Array.from(reports);
+  }
+  
+  return makeTicket(_reports, { karui, group, langOption, department, phase, exclude, lastRepetition });
+};
 
 type CalculationInit = {
   department: Department;
@@ -23,15 +45,11 @@ export const ticketState = selectorFamily<[CalculationTicket<Fixed<InputReport>>
     const reports = get(reportCardState);
     if (profile == null || reports.length == 0) return void 0;
     
-    const zero = get(zeroInclusion);
-    
-    const { karui, langOption, lastRepetition, classNum } = profile;
-    const group                                           = grouping[karui][classNum];
-    const exclude: CalcOptions['exclude']                 = zero ? [] : ['未履修', '欠席'];
+    const exclude: CalcOptions['exclude'] = get(zeroInclusion) ? [] : ['未履修', '欠席'];
     
     return [
-      makeTicket(lowest(reports), { karui, group, langOption, department, phase, exclude, lastRepetition }),
-      makeTicket(highest(reports), { karui, group, langOption, department, phase, exclude, lastRepetition }),
+      generateTicket(lowest(reports), profile, department, phase, exclude, get(repetitionExclusion)),
+      generateTicket(highest(reports), profile, department, phase, exclude, get(repetitionExclusion)),
     ];
   },
 });
