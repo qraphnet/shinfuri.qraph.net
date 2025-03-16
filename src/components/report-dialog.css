@@ -6,6 +6,6 @@
 }
 .report-dialog > div > button:last-child {
   background: #dd1111;
-  border-color: black;
-  color: white;
+  border-color: var(--accent-color);
+  color: var(--text-color);
 }

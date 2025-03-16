@@ -1,7 +1,48 @@
+:root {
+    --bg-color: white;
+    --text-color: black;
+    --accent-color: black;
+
+    color-scheme: light dark;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: black;
+        --text-color: #dcdcdc;
+        --accent-color: #b6b6b6;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+th, td {
+    border: 1px var(--accent-color) solid;
+}
+
 button {
+    border: 1px var(--accent-color) solid;
+    border-radius: 2px;
+    padding: .125em .25em;
+
+    font-size: 1em;
+    color: var(--text-color);
+    background: none;
+
     cursor: pointer;
 }
 
-:root {
-    color-scheme: light;
+button[type=submit] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    opacity: 1;
+    border-color: var(--accent-color);
+    color: var(--text-color);
 }
+
