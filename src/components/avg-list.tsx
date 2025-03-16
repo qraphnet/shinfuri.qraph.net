@@ -34,7 +34,7 @@ const format = (points: [Rational, Rational]) => {
   let d = 1;
   while (d < points[1].toNumber()) d *= 10;
   d            = Math.max(1, 100000 / d);
-  const [l, u] = points.map(p => '' + (Math.round(p.mul(Rational.int(d)).toNumber()) / d));
+  const [l, u] = points.map(p => '' + (Math.floor(p.mul(Rational.int(d)).toNumber()) / d));
   const lsplit = l.split('.');
   const usplit = u.split('.');
   return <>
