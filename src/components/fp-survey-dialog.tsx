@@ -52,6 +52,28 @@ const ticketState = selector({
 
 export const SurveyDialog: FC = () => {
   const ref    = useRef<HTMLDialogElement>(null);
+  const rref = useRecoilCallback(({ set }) => {
+    let cleanup: () => void;
+    return (node: HTMLDialogElement | null) => {
+      if (node == null) {
+        cleanup?.();
+        return;
+      }
+      
+      const controller = new AbortController;
+      
+      node.addEventListener('close', () => {
+        set(openState, false);
+      }, { signal: controller.signal });
+      
+      (ref as any).current = node;
+      
+      cleanup = () => {
+        controller.abort();
+      };
+    };
+  }, []);
+  
   const Form   = useRecoilValue(fpSurveyForm);
   const open   = useRecoilValue(openState);
   const ticket = useRecoilValue(ticketState);
@@ -63,11 +85,6 @@ export const SurveyDialog: FC = () => {
   useEffect(() => {
     if (ticket != null && Math.floor(calculate(ticket).toNumber() * 1000) == Math.floor(calculateFP(ticket).toNumber() * 1000)) {
       ref.current?.close();
-      fetch('/api/floating-point-survey', {
-        method : 'post',
-        body   : JSON.stringify({ which: 'no-difference' } satisfies SurveyAnswer),
-        headers: { 'Content-Type': 'application/json' },
-      });
     }
   }, [ticket]);
   
@@ -95,7 +112,7 @@ export const SurveyDialog: FC = () => {
     }
   }, []);
   
-  return ticket && <dialog ref={ ref } className='fp-survey-dialog'>
+  return ticket && <dialog ref={ rref } className='fp-survey-dialog'>
     <Form onSubmit={ submit }>
       当サイトの精度向上の為に，ご回答願います．
       <fieldset>
