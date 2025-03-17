@@ -121,7 +121,7 @@ export const SurveyDialog: FC = () => {
       当サイトの精度向上の為に，ご回答願います．
       <fieldset>
         UTASで確認できる基本平均点と一致するのは：
-        { diffenrent
+        { !diffenrent
           ? <label><input type='radio' name='which' value='no-difference'/>{ calculate(ticket).toNumber() }</label>
           : <>
             <label><input type='radio' name='which' value='rational'/>{ calculate(ticket).toNumber() }</label>
