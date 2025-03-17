@@ -5,6 +5,7 @@ import { Profile } from '../dataflow/profile/index.js';
 
 import { AvgList }       from './avg-list.js';
 import { Calculation }   from './calculation.js';
+import { SurveyDialog }  from './fp-survey-dialog.tsx';
 import { ProfileHeader } from './profile-header.js';
 import { ReportDialog }  from './report-dialog.js';
 import { Reports }       from './reports-viewer.js';
@@ -44,5 +45,6 @@ export const Main: FC<{ profile: Profile }> = ({ profile }) => {
     </div>
     { pane === 'reports' ? <Reports profile={ profile }/> : pane === 'avg-list' ? <AvgList/> : <Calculation/> }
     <ReportDialog/>
+    <SurveyDialog/>
   </div>;
 };

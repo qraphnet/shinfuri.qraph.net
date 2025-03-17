@@ -4,20 +4,24 @@ import { CourseCode, getCourseCode, isSubcourseOf } from 'shinfuri/lib/course-co
 import { Course, Term }                             from 'shinfuri/lib/course.js';
 import { pointToGrade }                             from 'shinfuri/lib/report.js';
 import { LanguageOption }                           from 'shinfuri/lib/type-utils.js';
-import { Profile }                                  from '../dataflow/profile';
-import { InputReport, reportCardState }             from '../dataflow/reports';
+
+import { Profile }                      from '../dataflow/profile';
+import { InputReport, reportCardState } from '../dataflow/reports';
+import { openState }                    from './fp-survey-dialog.tsx';
 
 import './report-prompt.css';
 
 export const ReportPrompt: FC<{ profile: Profile }> = ({ profile }) => {
-  const setReports = useSetRecoilState(reportCardState);
-  const onClick    = async () => {
+  const setReports    = useSetRecoilState(reportCardState);
+  const setOpenSurvey = useSetRecoilState(openState);
+  const onClick       = async () => {
     exploitClipboard(profile.langOption).then(reports => {
       if (
         reports != null
         && window.confirm(reports.map(r => r.courseTitle).filter(t => t != null).join('，') + 'で上書きしますか？')
       ) {
         setReports(reports);
+        setOpenSurvey(true);
       }
     });
   };

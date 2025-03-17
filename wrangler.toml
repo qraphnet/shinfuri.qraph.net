@@ -1,0 +1,11 @@
+name = "shinfuri-qraph-net"
+compatibility_date = "2025-03-17"
+
+pages_build_output_dir = "./dist"
+
+[env]
+production = { }
+
+[[kv_namespaces]]
+binding = "shinfuri-floating-point-survey-answer"
+id = "f3efee67f8c44e27b2d5fe8ff945c769"
