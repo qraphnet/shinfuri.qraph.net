@@ -19,7 +19,7 @@ export const onRequestPost = async (context: Parameters<PagesFunction<Env>>[0]) 
 
 const SurveyAnswer = z.union([
   z.object({
-    which: z.enum(['rational', 'floating-point']),
+    which: z.enum(['rational', 'floating-point', 'no-difference']),
   }),
   z.object({
     which : z.literal('neither'),
@@ -27,7 +27,10 @@ const SurveyAnswer = z.union([
     data  : z.nullable(z.object({
       profile: z.any(),
       reports: z.any(),
-    })),
+    }).or(z.object({
+      rational: z.number(),
+      fp      : z.number(),
+    }))),
   }),
 ]);
 

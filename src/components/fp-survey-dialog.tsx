@@ -51,7 +51,7 @@ const ticketState = selector({
 });
 
 export const SurveyDialog: FC = () => {
-  const ref    = useRef<HTMLDialogElement>(null);
+  const ref  = useRef<HTMLDialogElement>(null);
   const rref = useRecoilCallback(({ set }) => {
     let cleanup: () => void;
     return (node: HTMLDialogElement | null) => {
@@ -82,12 +82,6 @@ export const SurveyDialog: FC = () => {
     if (open) ref.current?.showModal();
   }, [open]);
   
-  useEffect(() => {
-    if (ticket != null && Math.floor(calculate(ticket).toNumber() * 1000) == Math.floor(calculateFP(ticket).toNumber() * 1000)) {
-      ref.current?.close();
-    }
-  }, [ticket]);
-  
   const submit = useRecoilCallback(({ snapshot }) => async () => {
     const input = await snapshot.getPromise(validated);
     if (input != null) {
@@ -99,7 +93,11 @@ export const SurveyDialog: FC = () => {
           const [profile, reports] = await Promise.all([snapshot.getPromise(profileState), snapshot.getPromise(reportCardState)]);
           data                     = { which: 'neither', actual: input.actual, data: { profile, reports } };
         } else {
-          data = { which: 'neither', actual: input.actual, data: null };
+          data = {
+            which : 'neither',
+            actual: input.actual,
+            data  : { rational: calculate(ticket!).toNumber(), fp: calculateFP(ticket!).toNumber() },
+          };
         }
       } else {
         data = { which: input.which };
@@ -112,14 +110,25 @@ export const SurveyDialog: FC = () => {
     }
   }, []);
   
+  if (ticket == null) return null;
+  
+  const rational   = calculate(ticket).toNumber();
+  const fp         = calculateFP(ticket).toNumber();
+  const diffenrent = Math.floor(rational * 1000) != Math.floor(fp * 1000);
+  
   return ticket && <dialog ref={ rref } className='fp-survey-dialog'>
     <Form onSubmit={ submit }>
       当サイトの精度向上の為に，ご回答願います．
       <fieldset>
         UTASで確認できる基本平均点と一致するのは：
-        <label><input type='radio' name='which' value='rational'/>{ calculate(ticket).toNumber() }</label>
-        <label><input type='radio' name='which' value='floating-point'/>{ calculateFP(ticket).toNumber() }</label>
-        <label><input type='radio' name='which' value='neither'/>どちらも一致しない</label>
+        { diffenrent
+          ? <label><input type='radio' name='which' value='no-difference'/>{ calculate(ticket).toNumber() }</label>
+          : <>
+            <label><input type='radio' name='which' value='rational'/>{ calculate(ticket).toNumber() }</label>
+            <label><input type='radio' name='which' value='floating-point'/>{ calculateFP(ticket).toNumber() }</label>
+          </>
+        }
+        <label><input type='radio' name='which' value='neither'/>いずれも一致しない</label>
       </fieldset>
       <Neither/>
       <Submit/>
