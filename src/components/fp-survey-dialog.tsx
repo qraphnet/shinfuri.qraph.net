@@ -117,7 +117,7 @@ export const SurveyDialog: FC = () => {
   const diffenrent = Math.floor(rational * 1000) != Math.floor(fp * 1000);
   
   return ticket && <dialog ref={ rref } className='fp-survey-dialog'>
-    <Form onSubmit={ submit }>
+    <Form method='dialog'  onSubmit={ submit }>
       当サイトの精度向上の為に，ご回答願います．
       <fieldset>
         UTASで確認できる基本平均点と一致するのは：
@@ -145,7 +145,7 @@ const Neither: FC = () => {
       <fieldset>
         <label>
           正確には：
-          <input name='actual' type='number' min={ 0 } max={ 100 }/>
+          <input name='actual' type='number' min={ 0 } max={ 100 } step='0.01'/>
         </label>
       </fieldset>
       <fieldset>

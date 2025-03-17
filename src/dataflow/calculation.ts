@@ -26,7 +26,7 @@ export const generateTicket = (reports: readonly Fixed<InputReport>[], profile: 
   
   let _reports: Fixed<InputReport>[];
   if (repEx && lastRepetition != null && lastRepetition.kind == '降年') {
-    _reports   = reports.filter(r => !(repExcFilter(r.course.code) && r.course.year == lastRepetition.year));
+    _reports   = reports.filter(r => !(repExcFilter(r.course.code) && r.course.year <= lastRepetition.year));
   } else {
     _reports = Array.from(reports);
   }
