@@ -19,6 +19,7 @@ export const repetitionExclusion = atom<boolean>({
 });
 
 // ref: https://www.c.u-tokyo.ac.jp/zenki/news/kyoumu/b22d51ae6664e3612e6f50a562d98df464b547e8.pdf    (2) ※4~6
+// 協力により，2S2の実験は通常通り算入されることが分かった．
 const repExcFilter = isSubcourseOf('FC813', 'FC823', 'FC850', 'FC888', 'FC891')
 export const generateTicket = (reports: readonly Fixed<InputReport>[], profile: Profile, department: Department, phase: Phase, exclude: CalcOptions['exclude'], repEx: boolean) => {
   const { karui, langOption, lastRepetition, classNum } = profile;

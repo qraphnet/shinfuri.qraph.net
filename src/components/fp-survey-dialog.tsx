@@ -112,20 +112,20 @@ export const SurveyDialog: FC = () => {
   
   if (ticket == null) return null;
   
-  const rational   = calculate(ticket).toNumber();
-  const fp         = calculateFP(ticket).toNumber();
-  const diffenrent = Math.floor(rational * 1000) != Math.floor(fp * 1000);
+  const rational  = Math.floor(calculate(ticket).toNumber() * 100) / 100;
+  const fp        = Math.floor(calculateFP(ticket).toNumber() * 100) / 100;
+  const different = rational != fp;
   
-  return ticket && <dialog ref={ rref } className='fp-survey-dialog'>
-    <Form method='dialog'  onSubmit={ submit }>
+  return <dialog ref={ rref } className='fp-survey-dialog'>
+    <Form method='dialog' onSubmit={ submit }>
       当サイトの精度向上の為に，ご回答願います．
       <fieldset>
         UTASで確認できる基本平均点と一致するのは：
-        { !diffenrent
-          ? <label><input type='radio' name='which' value='no-difference'/>{ calculate(ticket).toNumber() }</label>
+        { !different
+          ? <label><input type='radio' name='which' value='no-difference'/>{ rational }</label>
           : <>
-            <label><input type='radio' name='which' value='rational'/>{ calculate(ticket).toNumber() }</label>
-            <label><input type='radio' name='which' value='floating-point'/>{ calculateFP(ticket).toNumber() }</label>
+            <label><input type='radio' name='which' value='rational'/>{ rational }</label>
+            <label><input type='radio' name='which' value='floating-point'/>{ fp }</label>
           </>
         }
         <label><input type='radio' name='which' value='neither'/>いずれも一致しない</label>
